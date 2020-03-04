@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace hosts_manager
 {
@@ -55,6 +45,30 @@ namespace hosts_manager
                 Name = host,
                 Address = address
             });
+
+            // Save host to JSON file
+            TextWriter writer = null;
+            try
+            {
+                // Serialize hostData with formatting
+                var hostJSON = JsonConvert.SerializeObject(hostData, Formatting.Indented);
+
+                // Set save file to hosts.json inside folder that the .exe is running in
+                var savePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hosts.json";
+
+                // (create &) open file to write JSON
+                using(StreamWriter sw = File.AppendText(savePath))
+                {
+                    sw.Write($"{hostJSON}\n");
+                }
+            }
+            finally
+            {
+                if(writer != null)
+                {
+                    writer.Close();
+                }
+            }
 
             // Add new host to listbox
             hostsListBox.Items.Add(hostData);
