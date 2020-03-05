@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
@@ -27,11 +28,12 @@ namespace hosts_manager
         {
             InitializeComponent();
 
-            GetFile gf = new GetFile();
-            gf.Path();
- 
-            //UpdateFile uf = new UpdateFile();
-            //uf.test();
+            ManageFile mf = new ManageFile();
+
+            foreach (var item in mf.getCurrentHostRules())
+            {
+                MessageBox.Show(Convert.ToString(item));
+            }
         }
 
         private void addItemBtn_Click(object sender, RoutedEventArgs e)
