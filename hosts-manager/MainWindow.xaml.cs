@@ -26,6 +26,9 @@ namespace hosts_manager
         public MainWindow()
         {
             InitializeComponent();
+
+            GetFile gf = new GetFile();
+            gf.Path();
  
             //UpdateFile uf = new UpdateFile();
             //uf.test();
@@ -47,28 +50,29 @@ namespace hosts_manager
             });
 
             // Save host to JSON file
-            TextWriter writer = null;
-            try
-            {
-                // Serialize hostData with formatting
-                var hostJSON = JsonConvert.SerializeObject(hostData, Formatting.Indented);
+            //TextWriter writer = null;
+            //try
+            //{
+            //    // Serialize hostData with formatting
+            //    //var hostJSON = JsonConvert.SerializeObject(hostData, Formatting.Indented);
 
-                // Set save file to hosts.json inside folder that the .exe is running in
-                var savePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hosts.json";
+            //    // Set save file to hosts.json inside folder that the .exe is running in
+            //    //var savePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hosts.json";
+            //    //var savePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hosts.json";
 
-                // (create &) open file to write JSON
-                using(StreamWriter sw = File.AppendText(savePath))
-                {
-                    sw.Write($"{hostJSON}\n");
-                }
-            }
-            finally
-            {
-                if(writer != null)
-                {
-                    writer.Close();
-                }
-            }
+            //    // (create &) open file to write JSON
+            //    using (StreamWriter sw = File.AppendText(savePath))
+            //    {
+            //        sw.Write($"{hostJSON}\n");
+            //    }
+            //}
+            //finally
+            //{
+            //    if(writer != null)
+            //    {
+            //        writer.Close();
+            //    }
+            //}
 
             // Add new host to listbox
             hostsListBox.Items.Add(hostData);
