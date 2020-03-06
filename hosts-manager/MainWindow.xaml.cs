@@ -29,36 +29,32 @@ namespace hosts_manager
         {
             InitializeComponent();
 
-            ManageFile mf = new ManageFile();
-            List<string[]> currRules = mf.getCurrentHostRules();
-
-            foreach (var rule in currRules)
-            {
-                string host = rule[0];
-                string address = rule[1];
-
-                MessageBox.Show(host + ' ' + address);
-            }
+            addCurrentHostRules();
         }
 
         private void addCurrentHostRules()
         {
+            // Instances of classes
             ManageFile mf = new ManageFile();
 
-            foreach (var item in mf.getCurrentHostRules())
+            // Loop over hosts in array returned by `mf.getCurrentHostRules()`..
+            // ..And add them to listbox
+            foreach (var rule in mf.getCurrentHostRules())
             {
+                string host = rule[0];
+                string address = rule[1];
+
                 ObservableCollection<Host> hostData = new ObservableCollection<Host>();
 
                 // Add data to Host structure
-                //hostData.Add(new Host()
-                //{
-                //    Name = host,
-                //    Address = address
-                //});
+                hostData.Add(new Host()
+                {
+                    Name = host,
+                    Address = address
+                });
 
                 // Add new host to listbox
                 hostsListBox.Items.Add(hostData);
-                MessageBox.Show(Convert.ToString(item));
             }
         }
 
@@ -78,29 +74,26 @@ namespace hosts_manager
             });
 
             // Save host to JSON file
-            //TextWriter writer = null;
-            //try
-            //{
-            //    // Serialize hostData with formatting
-            //    //var hostJSON = JsonConvert.SerializeObject(hostData, Formatting.Indented);
+            TextWriter writer = null;
+            try
+            {
+                // Set path to hosts file
+                GetFile gf = new GetFile();
+                var savePath = gf.Path();
 
-            //    // Set save file to hosts.json inside folder that the .exe is running in
-            //    //var savePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hosts.json";
-            //    //var savePath = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hosts.json";
-
-            //    // (create &) open file to write JSON
-            //    using (StreamWriter sw = File.AppendText(savePath))
-            //    {
-            //        sw.Write($"{hostJSON}\n");
-            //    }
-            //}
-            //finally
-            //{
-            //    if(writer != null)
-            //    {
-            //        writer.Close();
-            //    }
-            //}
+                // (create &) open file to write rule
+                using (StreamWriter sw = File.AppendText(savePath))
+                {
+                    sw.Write($"{address} {host}\n");
+                }
+            }
+            finally
+            {
+                if (writer != null)
+                {
+                    writer.Close();
+                }
+            }
 
             // Add new host to listbox
             hostsListBox.Items.Add(hostData);
