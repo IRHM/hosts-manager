@@ -84,7 +84,7 @@ namespace hosts_manager
                 // (create &) open file to write rule
                 using (StreamWriter sw = File.AppendText(savePath))
                 {
-                    sw.Write($"{address} {host}\n");
+                    sw.Write($"\n{address} {host}");
                 }
             }
             finally
