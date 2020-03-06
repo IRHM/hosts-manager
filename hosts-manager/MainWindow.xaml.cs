@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 
@@ -29,9 +30,34 @@ namespace hosts_manager
             InitializeComponent();
 
             ManageFile mf = new ManageFile();
+            List<string[]> currRules = mf.getCurrentHostRules();
+
+            foreach (var rule in currRules)
+            {
+                string host = rule[0];
+                string address = rule[1];
+
+                MessageBox.Show(host + ' ' + address);
+            }
+        }
+
+        private void addCurrentHostRules()
+        {
+            ManageFile mf = new ManageFile();
 
             foreach (var item in mf.getCurrentHostRules())
             {
+                ObservableCollection<Host> hostData = new ObservableCollection<Host>();
+
+                // Add data to Host structure
+                //hostData.Add(new Host()
+                //{
+                //    Name = host,
+                //    Address = address
+                //});
+
+                // Add new host to listbox
+                hostsListBox.Items.Add(hostData);
                 MessageBox.Show(Convert.ToString(item));
             }
         }

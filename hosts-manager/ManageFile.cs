@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace hosts_manager
@@ -13,7 +14,7 @@ namespace hosts_manager
             //MessageBox.Show("test");
         }
 
-        public Array getCurrentHostRules()
+        public List<string[]> getCurrentHostRules()
         {
             // Instances of classes
             GetFile gf = new GetFile();
@@ -24,7 +25,8 @@ namespace hosts_manager
             Contract.Requires(path != null);
             Contract.Requires(path.Length != 0);
 
-            List<String> rules = new List<String>();
+            // Define rules list
+            List<string[]> rules = new List<string[]>();
 
             using (StreamReader sr = new StreamReader(path))
             {
@@ -40,15 +42,24 @@ namespace hosts_manager
                         currLine = currLine.Substring(0, index);
                     }
 
+                    // If currLine is not empty it is a rule so add to dict
                     if (currLine != String.Empty)
                     {
-                        // Add all rules to array
-                        rules.Add(currLine);
+                        // Seperate address and host in current rule/line
+                        string[] ruleSeperated = currLine.Split(null);
+                        string host = ruleSeperated[1];
+                        string address = ruleSeperated[0];
+
+                        // Add rule items to array
+                        string[] rule = { host, address };
+
+                        // Add individual rule to overall rules list
+                        rules.Add(rule);
                     }
                 }
             }
 
-            return rules.ToArray();
+            return rules;
         }
     }
 }
