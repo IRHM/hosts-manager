@@ -4,30 +4,59 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:hosts_manager"
-        mc:Ignorable="d"
-        Title="Hosts Manager" Height="450" Width="400">
+        mc:Ignorable="d" 
+        Title="Hosts Manager" 
+        Height="450" Width="400" 
+        MinHeight="350" MinWidth="300">
     <Window.Resources>
-
         <!-- HOST LIST ITEM TEMPLATE -->
         <DataTemplate x:Key="hostListItem">
             <StackPanel Orientation="Horizontal">
-                <CheckBox Margin="0 0 5 0"></CheckBox>
+                <CheckBox x:Name="hostCheckBox" Margin="0 0 5 0"
+                          Unchecked="hostCheckBox_Unchecked" 
+                          Checked="hostCheckBox_Checked">
+                </CheckBox>
                 <TextBlock Text="{Binding Path=Name}"></TextBlock>
             </StackPanel>
         </DataTemplate>
         
+        <!-- STYLES -->
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
     </Window.Resources>
-    
+
     <Border Padding="10">
         <Grid>
             <StackPanel>
+                <Grid Margin="0 0 0 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="copyBtn" Content="Copy" Grid.Column="0"
+                            Margin="0 0 2 0" IsEnabled="False"></Button>
+                    <Button x:Name="deleteBtn" Content="Delete" Grid.Column="1"
+                            Margin="2 0 0 0" IsEnabled="False"></Button>
+                </Grid>
 
                 <!-- LIST BOX -->
                 <ListBox x:Name="hostsListBox" Grid.Column="1" Height="150px"
-                         ItemTemplate="{StaticResource hostListItem}">
+                            ItemTemplate="{StaticResource hostListItem}">
                 </ListBox>
 
-                <!-- ADD NEW HOST -->
+                    <!-- ADD NEW HOST -->
                 <Grid Margin="0 10 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -41,15 +70,13 @@
 
                     <StackPanel Grid.Column="0" Margin="0 0 2 0">
                         <Label Content="Host:" Grid.Row="0" 
-                               FontWeight="Bold" FontSize="10"
-                               Padding="0"/>
+                               FontWeight="Bold" Padding="0"/>
                         <TextBox x:Name="hostTextBox" Grid.Row="1"></TextBox>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Margin="2 0 0 0">
                         <Label Content="Address:" Grid.Row="0" 
-                               FontWeight="Bold" FontSize="10" 
-                               Padding="0"/>
+                               FontWeight="Bold" Padding="0"/>
                         <TextBox x:Name="addressTextBox" Grid.Row="1"></TextBox>
                     </StackPanel>
                 </Grid>

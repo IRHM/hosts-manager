@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace hosts_manager
 {
@@ -97,6 +97,49 @@ namespace hosts_manager
 
             // Add new host to listbox
             hostsListBox.Items.Add(hostData);
+        }
+
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
+        }
+
+        private void hostCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            copyBtn.IsEnabled = true;
+            deleteBtn.IsEnabled = true;
+        }
+
+        private void hostCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            foreach (CheckBox cb in FindVisualChildren<CheckBox>(hostsListBox))
+            {
+                // If one checkbox is checked return to stop function
+                if (cb.IsChecked == true)
+                {
+                    return;
+                }
+            }
+
+            // If function isn't stopped above then..
+            // ..all checkboxes are unticked so enable buttons
+            copyBtn.IsEnabled = false;
+            deleteBtn.IsEnabled = false;
         }
     }
 }
