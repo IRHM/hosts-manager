@@ -25,6 +25,13 @@ namespace hosts_manager
 
     public partial class MainWindow : Window
     {
+        // Instances of classes
+        static GetFile gf = new GetFile();
+        static ManageFile mf = new ManageFile();
+
+        // hosts file path
+        string hostsFilePath = gf.Path();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -34,9 +41,6 @@ namespace hosts_manager
 
         private void addCurrentHostRules()
         {
-            // Instances of classes
-            ManageFile mf = new ManageFile();
-
             // Loop over hosts in array returned by `mf.getCurrentHostRules()`..
             // ..And add them to listbox
             foreach (var rule in mf.getCurrentHostRules())
@@ -73,16 +77,12 @@ namespace hosts_manager
                 Address = address
             });
 
-            // Save host to JSON file
+            // Save host to hosts file
             TextWriter writer = null;
             try
             {
-                // Set path to hosts file
-                GetFile gf = new GetFile();
-                var savePath = gf.Path();
-
                 // (create &) open file to write rule
-                using (StreamWriter sw = File.AppendText(savePath))
+                using (StreamWriter sw = File.AppendText(hostsFilePath))
                 {
                     sw.Write($"\n{address} {host}");
                 }
@@ -99,7 +99,7 @@ namespace hosts_manager
             hostsListBox.Items.Add(hostData);
         }
 
-        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        public static IEnumerable<T> findVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
         {
             if (depObj != null)
             {
@@ -111,7 +111,7 @@ namespace hosts_manager
                         yield return (T)child;
                     }
 
-                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    foreach (T childOfChild in findVisualChildren<T>(child))
                     {
                         yield return childOfChild;
                     }
@@ -127,7 +127,7 @@ namespace hosts_manager
 
         private void hostCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            foreach (CheckBox cb in FindVisualChildren<CheckBox>(hostsListBox))
+            foreach (CheckBox cb in findVisualChildren<CheckBox>(hostsListBox))
             {
                 // If one checkbox is checked return to stop function
                 if (cb.IsChecked == true)
@@ -140,6 +140,26 @@ namespace hosts_manager
             // ..all checkboxes are unticked so enable buttons
             copyBtn.IsEnabled = false;
             deleteBtn.IsEnabled = false;
+        }
+
+        private void deleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (StackPanel sp in findVisualChildren<StackPanel>(hostsListBox))
+            {
+                foreach (CheckBox cb in findVisualChildren<CheckBox>(sp))
+                {
+                    if (cb.IsChecked == false)
+                    {
+                        break;
+                    }
+
+                    foreach (TextBlock tb in findVisualChildren<TextBlock>(sp))
+                    {
+                        string ruleToDelete = tb.Text;
+                        mf.deleteHostRule(ruleToDelete);
+                    }
+                }
+            }
         }
     }
 }

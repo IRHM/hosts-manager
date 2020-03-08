@@ -47,16 +47,17 @@
 
                     <Button x:Name="copyBtn" Content="Copy" Grid.Column="0"
                             Margin="0 0 2 0" IsEnabled="False"></Button>
-                    <Button x:Name="deleteBtn" Content="Delete" Grid.Column="1"
+                    <Button x:Name="deleteBtn" Click="deleteBtn_Click"
+                            Content="Delete"  Grid.Column="1" 
                             Margin="2 0 0 0" IsEnabled="False"></Button>
                 </Grid>
 
                 <!-- LIST BOX -->
                 <ListBox x:Name="hostsListBox" Grid.Column="1" Height="150px"
-                            ItemTemplate="{StaticResource hostListItem}">
+                         ItemTemplate="{StaticResource hostListItem}">
                 </ListBox>
 
-                    <!-- ADD NEW HOST -->
+                <!-- ADD NEW HOST -->
                 <Grid Margin="0 10 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

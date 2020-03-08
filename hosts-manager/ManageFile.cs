@@ -9,6 +9,10 @@ namespace hosts_manager
 {
     class ManageFile
     {
+        // Get hosts file path
+        static GetFile gf = new GetFile();
+        string hostsFilePath = gf.Path();
+
         public void update()
         {
             //MessageBox.Show("test");
@@ -16,21 +20,15 @@ namespace hosts_manager
 
         public List<string[]> getCurrentHostRules()
         {
-            // Instances of classes
-            GetFile gf = new GetFile();
-
-            // Get hosts file path
-            string path = gf.Path();
-
-            Contract.Requires(path != null);
-            Contract.Requires(path.Length != 0);
+            Contract.Requires(hostsFilePath != null);
+            Contract.Requires(hostsFilePath.Length != 0);
 
             // Define rules list
             List<string[]> rules = new List<string[]>();
 
-            using (StreamReader sr = new StreamReader(path))
+            using (StreamReader sr = new StreamReader(hostsFilePath))
             {
-                foreach (string line in File.ReadLines(path))
+                foreach (string line in File.ReadLines(hostsFilePath))
                 {
                     // Set line to currLine so its value can be modified
                     string currLine = line;
@@ -60,6 +58,11 @@ namespace hosts_manager
             }
 
             return rules;
+        }
+
+        public void deleteHostRule(string ruleToDelete)
+        {
+            
         }
     }
 }
