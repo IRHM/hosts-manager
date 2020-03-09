@@ -60,9 +60,28 @@ namespace hosts_manager
             return rules;
         }
 
-        public void deleteHostRule(string ruleToDelete)
+        public void deleteHostRule(string rule)
         {
-            
+            var name = rule.Split(' ')[0].ToString();
+            var address = rule.Split(' ')[1].ToString();
+            var ruleToDelete = $"{address} {name}";
+
+            // Load all lines into list
+            List<String> lines = File.ReadAllLines(hostsFilePath).ToList();
+
+            // Write all lines back into hostsfile, unless it it the one to delete
+            using (StreamWriter writer = new StreamWriter(hostsFilePath))
+            {
+                foreach (var line in lines)
+                {
+                    if (String.Compare(line, ruleToDelete) == 0)
+                    {
+                        continue;
+                    }
+
+                    writer.WriteLine(line);
+                }
+            }
         }
     }
 }

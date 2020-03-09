@@ -18,7 +18,8 @@
                 </CheckBox>
                 <TextBlock>
                     <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0} {1}">
+                        <MultiBinding StringFormat="{}{0} {1}" 
+                                      FallbackValue="Invalid Host Caught">
                             <Binding Path="Name"/>
                             <Binding Path="Address"/>
                         </MultiBinding>

@@ -155,8 +155,8 @@ namespace hosts_manager
 
                     foreach (TextBlock tb in findVisualChildren<TextBlock>(sp))
                     {
-                        string ruleToDelete = tb.Text;
-                        mf.deleteHostRule(ruleToDelete);
+                        string rule = tb.Text;
+                        mf.deleteHostRule(rule);
                     }
                 }
             }
