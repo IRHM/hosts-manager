@@ -13,11 +13,6 @@ namespace hosts_manager
         static GetFile gf = new GetFile();
         string hostsFilePath = gf.Path();
 
-        public void update()
-        {
-            //MessageBox.Show("test");
-        }
-
         public List<string[]> getCurrentHostRules()
         {
             Contract.Requires(hostsFilePath != null);

@@ -144,21 +144,35 @@ namespace hosts_manager
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
+            int i = 0;
+
             foreach (StackPanel sp in findVisualChildren<StackPanel>(hostsListBox))
             {
                 foreach (CheckBox cb in findVisualChildren<CheckBox>(sp))
                 {
+                    // If checkbox isn't checked break from loop
                     if (cb.IsChecked == false)
                     {
+                        //MessageBox.Show($"unchecked:  - {cb.IsChecked}");
                         break;
                     }
 
+                    // TODO: Remove Item after deleting rule from hosts file
+
+                    // Remove item
+                    Object item = hostsListBox.Items[i];
+                    hostsListBox.Items.RemoveAt(hostsListBox.Items.IndexOf(item));
+
+                    // Delete rule from hosts file if checked
                     foreach (TextBlock tb in findVisualChildren<TextBlock>(sp))
                     {
                         string rule = tb.Text;
-                        mf.deleteHostRule(rule);
+
+                        //mf.deleteHostRule(rule);
                     }
                 }
+
+                i++;
             }
         }
     }
