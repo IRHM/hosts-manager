@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Windows;
 
 namespace hosts_manager
 {
@@ -53,7 +54,6 @@ namespace hosts_manager
 
         public void addHostRule(string rule)
         {
-            TextWriter writer = null;
             try
             {
                 // (create &) open file to write rule
@@ -63,12 +63,13 @@ namespace hosts_manager
                     sw.Write($"\n{rule}");
                 }
             }
-            finally
+            catch (IOException ex)
             {
-                if (writer != null)
-                {
-                    writer.Close();
-                }
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -81,18 +82,29 @@ namespace hosts_manager
             // Load all lines into list
             List<String> lines = File.ReadAllLines(hostsFilePath).ToList();
 
-            // Write all lines back into hostsfile, unless it it the one to delete
-            using (StreamWriter writer = new StreamWriter(hostsFilePath))
+            try
             {
-                foreach (var line in lines)
+                // Write all lines back into hostsfile, unless it it the one to delete
+                using (StreamWriter writer = new StreamWriter(hostsFilePath))
                 {
-                    if (String.Compare(line, ruleToDelete) == 0)
+                    foreach (var line in lines)
                     {
-                        continue;
-                    }
+                        if (String.Compare(line, ruleToDelete) == 0)
+                        {
+                            continue;
+                        }
 
-                    writer.WriteLine(line);
+                        writer.WriteLine(line);
+                    }
                 }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }
