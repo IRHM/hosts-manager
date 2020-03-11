@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -53,11 +54,11 @@ namespace hosts_manager
 
         public void addHostRule(string rule)
         {
-            TextWriter writer = null;
+            StreamWriter sw = null;
             try
             {
                 // (create &) open file to write rule
-                using (StreamWriter sw = File.AppendText(hostsFilePath))
+                using (sw = File.AppendText(hostsFilePath))
                 {
                     // TODO: If line is empty, just write to that line instead of going to newline
                     sw.Write($"\n{rule}");
@@ -65,15 +66,16 @@ namespace hosts_manager
             }
             finally
             {
-                if (writer != null)
+                if (sw != null)
                 {
-                    writer.Close();
+                    sw.Close();
                 }
             }
         }
 
         public void deleteHostRule(string rule)
         {
+            // Get rule to delete
             var name = rule.Split(' ')[0].ToString();
             var address = rule.Split(' ')[1].ToString();
             var ruleToDelete = $"{address} {name}";
@@ -86,11 +88,13 @@ namespace hosts_manager
             {
                 foreach (var line in lines)
                 {
+                    // If current line matches ruleToDelete, skip iteration and dont write it back
                     if (String.Compare(line, ruleToDelete) == 0)
                     {
                         continue;
                     }
 
+                    // Write line back if it isn't to be deleted
                     writer.WriteLine(line);
                 }
             }
