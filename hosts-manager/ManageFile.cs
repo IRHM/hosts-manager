@@ -54,10 +54,12 @@ namespace hosts_manager
 
         public void addHostRule(string rule)
         {
+            StreamWriter sw = null;
+
             try
             {
                 // (create &) open file to write rule
-                using (StreamWriter sw = File.AppendText(hostsFilePath))
+                using (sw = File.AppendText(hostsFilePath))
                 {
                     // TODO: If line is empty, just write to that line instead of going to newline
                     sw.Write($"\n{rule}");
@@ -71,6 +73,13 @@ namespace hosts_manager
             {
                 MessageBox.Show(ex.Message);
             }
+            finally
+            {
+                if (sw != null)
+                {
+                    sw.Close();
+                }
+            }
         }
 
         public void deleteHostRule(string rule)
@@ -82,10 +91,12 @@ namespace hosts_manager
             // Load all lines into list
             List<String> lines = File.ReadAllLines(hostsFilePath).ToList();
 
+            StreamWriter sw = null;
+
             try
             {
                 // Write all lines back into hostsfile, unless it it the one to delete
-                using (StreamWriter writer = new StreamWriter(hostsFilePath))
+                using (sw = new StreamWriter(hostsFilePath))
                 {
                     foreach (var line in lines)
                     {
@@ -94,7 +105,7 @@ namespace hosts_manager
                             continue;
                         }
 
-                        writer.WriteLine(line);
+                        sw.WriteLine(line);
                     }
                 }
             }
@@ -105,6 +116,13 @@ namespace hosts_manager
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                if(sw != null)
+                {
+                    sw.Close();
+                }
             }
         }
     }
