@@ -51,6 +51,27 @@ namespace hosts_manager
             return rules;
         }
 
+        public void addHostRule(string rule)
+        {
+            TextWriter writer = null;
+            try
+            {
+                // (create &) open file to write rule
+                using (StreamWriter sw = File.AppendText(hostsFilePath))
+                {
+                    // TODO: If line is empty, just write to that line instead of going to newline
+                    sw.Write($"\n{rule}");
+                }
+            }
+            finally
+            {
+                if (writer != null)
+                {
+                    writer.Close();
+                }
+            }
+        }
+
         public void deleteHostRule(string rule)
         {
             var name = rule.Split(' ')[0].ToString();

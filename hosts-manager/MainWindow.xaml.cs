@@ -82,23 +82,7 @@ namespace hosts_manager
             });
 
             // Save host to hosts file
-            TextWriter writer = null;
-            try
-            {
-                // (create &) open file to write rule
-                using (StreamWriter sw = File.AppendText(hostsFilePath))
-                {
-                    // TODO: If line is empty, just write to that line instead of going to newline
-                    sw.Write($"\n{address} {host}");
-                }
-            }
-            finally
-            {
-                if (writer != null)
-                {
-                    writer.Close();
-                }
-            }
+            mf.addHostRule($"{address} {host}");
 
             // Add new host to listbox
             hostsListBox.Items.Add(hostData);
