@@ -37,10 +37,10 @@ namespace hosts_manager
         {
             InitializeComponent();
 
-            //addCurrentHostRules();
+            addCurrentHostRules();
         }
 
-        private void AddCurrentHostRules()
+        private void addCurrentHostRules()
         {
             // Clear current items from listbox
             hostsListBox.Items.Clear();
@@ -62,9 +62,7 @@ namespace hosts_manager
                 });
 
                 // Add new host to listbox
-                Application.Current.Dispatcher.Invoke(new Action(() => { hostsListBox.Items.Add(hostData); }));
-
-                    
+                hostsListBox.Items.Add(hostData);
             }
         }
 
@@ -176,7 +174,7 @@ namespace hosts_manager
                 i++;
             }
 
-            //AddCurrentHostRules();
+            addCurrentHostRules();
         }
 
         private void copyBtn_Click(object sender, RoutedEventArgs e)
