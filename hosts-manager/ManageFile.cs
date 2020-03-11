@@ -9,8 +9,11 @@ namespace hosts_manager
 {
     class ManageFile
     {
-        // Get hosts file path
+        // Class references
         static GetFile gf = new GetFile();
+        static ErrorHandler eh = new ErrorHandler();
+
+        // Get hosts file path
         string hostsFilePath = gf.Path();
 
         public List<string[]> getCurrentHostRules()
@@ -57,11 +60,11 @@ namespace hosts_manager
             {
                 var brokenRule = ruleSeperated[0];
 
-                MessageBox.Show($"Error: {ex.Message}\nTry removing rule '{brokenRule}' from hosts file.");
+                eh.showError(ex, $"Try removing rule '{brokenRule}' from hosts file.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                eh.showError(ex);
             }
 
             return rules;
@@ -82,11 +85,11 @@ namespace hosts_manager
             }
             catch (IOException ex)
             {
-                MessageBox.Show(ex.Message);
+                eh.showError(ex);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                eh.showError(ex);
             }
             finally
             {
@@ -126,11 +129,11 @@ namespace hosts_manager
             }
             catch (IOException ex)
             {
-                MessageBox.Show(ex.Message);
+                eh.showError(ex);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                eh.showError(ex);
             }
             finally
             {
