@@ -37,10 +37,10 @@ namespace hosts_manager
         {
             InitializeComponent();
 
-            addCurrentHostRules();
+            //addCurrentHostRules();
         }
 
-        private void addCurrentHostRules()
+        private void AddCurrentHostRules()
         {
             // Clear current items from listbox
             hostsListBox.Items.Clear();
@@ -62,7 +62,9 @@ namespace hosts_manager
                 });
 
                 // Add new host to listbox
-                hostsListBox.Items.Add(hostData);
+                Application.Current.Dispatcher.Invoke(new Action(() => { hostsListBox.Items.Add(hostData); }));
+
+                    
             }
         }
 
@@ -158,11 +160,8 @@ namespace hosts_manager
                     // If checkbox isn't checked skip iteration
                     if (cb.IsChecked == false)
                     {
-                        Debug.WriteLine($"NOT Deleted {i}");
                         continue;
                     }
-
-                    Debug.WriteLine($"Deleted {i}");
 
                     // Delete rule from hosts file if checked
                     foreach (TextBlock tb in findVisualChildren<TextBlock>(sp))
@@ -177,7 +176,12 @@ namespace hosts_manager
                 i++;
             }
 
-            addCurrentHostRules();
+            //AddCurrentHostRules();
+        }
+
+        private void copyBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

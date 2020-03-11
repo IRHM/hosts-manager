@@ -54,8 +54,9 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- TODO: Disable Button -->
-                    <Button x:Name="copyBtn" Content="Copy" Grid.Column="0"
-                            Margin="0 0 2 0" IsEnabled="False"></Button>
+                    <Button x:Name="copyBtn" Click="copyBtn_Click"
+                            Content="Copy" Grid.Column="0"
+                            Margin="0 0 2 0" IsEnabled="True"></Button>
                     <Button x:Name="deleteBtn" Click="deleteBtn_Click"
                             Content="Delete"  Grid.Column="1" 
                             Margin="2 0 0 0" IsEnabled="False"></Button>
