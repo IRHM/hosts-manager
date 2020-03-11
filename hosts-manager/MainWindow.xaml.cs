@@ -131,8 +131,9 @@ namespace hosts_manager
             deleteBtn.IsEnabled = false;
         }
 
-        private void deleteBtn_Click(object sender, RoutedEventArgs e)
+        private List<TextBlock> getHostsCheckedTextBlocks()
         {
+            List<TextBlock> checkedTextBlocks = new List<TextBlock>();
             int i = 0;
 
             foreach (StackPanel sp in findVisualChildren<StackPanel>(hostsListBox))
@@ -145,19 +146,29 @@ namespace hosts_manager
                         continue;
                     }
 
-                    // Delete rule from hosts file if checked
+                    // Add textblock to list if checkbox is ticked
                     foreach (TextBlock tb in findVisualChildren<TextBlock>(sp))
                     {
-                        string rule = tb.Text;
-                        mf.deleteHostRule(rule);
+                        checkedTextBlocks.Add(tb);
                     }
-
-                    // TODO: Remove Item after deleting rule from hosts file
                 }
 
                 i++;
             }
 
+            return checkedTextBlocks;
+        }
+
+        private void deleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // Get all checked items textblock values and delete from hosts file
+            foreach (TextBlock tb in getHostsCheckedTextBlocks())
+            {
+                string rule = tb.Text;
+                mf.deleteHostRule(rule);
+            }
+
+            // After deleting refresh listbox
             addCurrentHostRules();
         }
 
