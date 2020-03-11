@@ -20,33 +20,48 @@ namespace hosts_manager
 
             // Define rules list
             List<string[]> rules = new List<string[]>();
-                
-            foreach (string line in File.ReadLines(hostsFilePath))
+
+            string[] ruleSeperated = null;
+
+            try
             {
-                // Set line to currLine so its value can be modified
-                string currLine = line;
-
-                // Remove comment from line
-                int index = currLine.IndexOf("#");
-                if (index > -1)
+                foreach (string line in File.ReadLines(hostsFilePath))
                 {
-                    currLine = currLine.Substring(0, index);
+                    // Set line to currLine so its value can be modified
+                    string currLine = line;
+
+                    // Remove comment from line
+                    int index = currLine.IndexOf("#");
+                    if (index > -1)
+                    {
+                        currLine = currLine.Substring(0, index);
+                    }
+
+                    // If currLine is not empty it is a rule so add to dict
+                    if (currLine != String.Empty)
+                    {
+                        // Seperate address and host in current rule/line
+                        ruleSeperated = currLine.Split(null);
+                        string host = ruleSeperated[1];
+                        string address = ruleSeperated[0];
+
+                        // Add rule items to array
+                        string[] rule = { host, address };
+
+                        // Add individual rule to overall rules list
+                        rules.Add(rule);
+                    }
                 }
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                var brokenRule = ruleSeperated[0];
 
-                // If currLine is not empty it is a rule so add to dict
-                if (currLine != String.Empty)
-                {
-                    // Seperate address and host in current rule/line
-                    string[] ruleSeperated = currLine.Split(null);
-                    string host = ruleSeperated[1];
-                    string address = ruleSeperated[0];
-
-                    // Add rule items to array
-                    string[] rule = { host, address };
-
-                    // Add individual rule to overall rules list
-                    rules.Add(rule);
-                }
+                MessageBox.Show($"Error: {ex.Message}\nTry removing rule '{brokenRule}' from hosts file.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
             }
 
             return rules;
