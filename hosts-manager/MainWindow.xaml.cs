@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,6 +42,9 @@ namespace hosts_manager
 
         private void addCurrentHostRules()
         {
+            // Clear current items from listbox
+            hostsListBox.Items.Clear();
+
             // Loop over hosts in array returned by `mf.getCurrentHostRules()`..
             // ..And add them to listbox
             foreach (var rule in mf.getCurrentHostRules())
@@ -84,6 +88,7 @@ namespace hosts_manager
                 // (create &) open file to write rule
                 using (StreamWriter sw = File.AppendText(hostsFilePath))
                 {
+                    // TODO: If line is empty, just write to that line instead of going to newline
                     sw.Write($"\n{address} {host}");
                 }
             }
@@ -150,30 +155,29 @@ namespace hosts_manager
             {
                 foreach (CheckBox cb in findVisualChildren<CheckBox>(sp))
                 {
-                    // If checkbox isn't checked break from loop
+                    // If checkbox isn't checked skip iteration
                     if (cb.IsChecked == false)
                     {
-                        //MessageBox.Show($"unchecked:  - {cb.IsChecked}");
-                        break;
+                        Debug.WriteLine($"NOT Deleted {i}");
+                        continue;
                     }
 
-                    // TODO: Remove Item after deleting rule from hosts file
-
-                    // Remove item
-                    Object item = hostsListBox.Items[i];
-                    hostsListBox.Items.RemoveAt(hostsListBox.Items.IndexOf(item));
+                    Debug.WriteLine($"Deleted {i}");
 
                     // Delete rule from hosts file if checked
                     foreach (TextBlock tb in findVisualChildren<TextBlock>(sp))
                     {
                         string rule = tb.Text;
-
-                        //mf.deleteHostRule(rule);
+                        mf.deleteHostRule(rule);
                     }
+
+                    // TODO: Remove Item after deleting rule from hosts file
                 }
 
                 i++;
             }
+
+            addCurrentHostRules();
         }
     }
 }
