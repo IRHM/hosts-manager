@@ -11,26 +11,24 @@
     <Window.Resources>
         <!-- HOST LIST ITEM TEMPLATE -->
         <DataTemplate x:Key="hostListItem">
-            <ListBoxItem>
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox x:Name="hostCheckBox" Margin="0 0 5 0"
-                                Unchecked="hostCheckBox_Unchecked" 
-                                Checked="hostCheckBox_Checked">
-                    </CheckBox>
-                    <TextBlock>
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0} {1}" 
-                                            FallbackValue="Invalid Host Caught">
-                                <Binding Path="Name"/>
-                                <Binding Path="Address"/>
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                </StackPanel>
-            </ListBoxItem>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox x:Name="hostCheckBox" Margin="0 0 5 0"
+                          Unchecked="hostCheckBox_Unchecked" 
+                          Checked="hostCheckBox_Checked">
+                </CheckBox>
+                <TextBlock IsHitTestVisible="False">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0} {1}" 
+                                      FallbackValue="Invalid Host Caught">
+                            <Binding Path="Name"/>
+                            <Binding Path="Address"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
         </DataTemplate>
-        
-        <!-- STYLES -->
+
+            <!-- STYLES -->
         <Style TargetType="{x:Type Label}">
             <Setter Property="FontSize" Value="15"/>
         </Style>
@@ -67,17 +65,21 @@
                 <!-- LIST BOX -->
                 <ListBox x:Name="hostsListBox" Grid.Column="1" Height="150px"
                          ItemTemplate="{StaticResource hostListItem}">
+                    
+                    <!-- CONTEXT MENU -->
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="ContextMenu">
                                 <Setter.Value>
                                     <ContextMenu>
                                         <MenuItem Header="hi"/>
+                                        <MenuItem Header="bye"/>
                                     </ContextMenu>
                                 </Setter.Value>
                             </Setter>
                         </Style>
                     </ListBox.ItemContainerStyle>
+                    
                 </ListBox>
 
                 <!-- ADD NEW HOST -->
