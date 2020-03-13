@@ -27,11 +27,7 @@ namespace hosts_manager
     public partial class MainWindow : Window
     {
         // Instances of classes
-        static GetFile gf = new GetFile();
         static ManageFile mf = new ManageFile();
-
-        // hosts file path
-        string hostsFilePath = gf.Path();
 
         public MainWindow()
         {
@@ -110,7 +106,7 @@ namespace hosts_manager
 
         private void hostCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            copyBtn.IsEnabled = true;
+            disableBtn.IsEnabled = true;
             deleteBtn.IsEnabled = true;
         }
 
@@ -127,7 +123,7 @@ namespace hosts_manager
 
             // If function isn't stopped above then..
             // ..all checkboxes are unticked so enable buttons
-            copyBtn.IsEnabled = false;
+            disableBtn.IsEnabled = false;
             deleteBtn.IsEnabled = false;
         }
 
@@ -172,9 +168,9 @@ namespace hosts_manager
             addCurrentHostRules();
         }
 
-        private void copyBtn_Click(object sender, RoutedEventArgs e)
+        private void copyCtx_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }

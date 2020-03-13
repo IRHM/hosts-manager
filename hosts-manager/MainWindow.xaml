@@ -28,7 +28,7 @@
             </StackPanel>
         </DataTemplate>
 
-            <!-- STYLES -->
+        <!-- STYLES -->
         <Style TargetType="{x:Type Label}">
             <Setter Property="FontSize" Value="15"/>
         </Style>
@@ -54,32 +54,37 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- TODO: Disable Button -->
-                    <Button x:Name="copyBtn" Click="copyBtn_Click"
-                            Content="Copy" Grid.Column="0"
-                            Margin="0 0 2 0" IsEnabled="False"></Button>
+                    <Button x:Name="disableBtn"
+                            Content="Disable" Grid.Column="0"
+                            Margin="0 0 2 0" IsEnabled="False"/>
                     <Button x:Name="deleteBtn" Click="deleteBtn_Click"
                             Content="Delete"  Grid.Column="1" 
-                            Margin="2 0 0 0" IsEnabled="False"></Button>
+                            Margin="2 0 0 0" IsEnabled="False"/>
                 </Grid>
 
                 <!-- LIST BOX -->
                 <ListBox x:Name="hostsListBox" Grid.Column="1" Height="150px"
                          ItemTemplate="{StaticResource hostListItem}">
-                    
+
                     <!-- CONTEXT MENU -->
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="ContextMenu">
                                 <Setter.Value>
                                     <ContextMenu>
-                                        <MenuItem Header="hi"/>
-                                        <MenuItem Header="bye"/>
+                                        <MenuItem Name="copyCtx" Header="Copy">
+                                            <MenuItem.Style>
+                                                <Style TargetType="MenuItem">
+                                                    <EventSetter Event="Click" Handler="copyCtx_Click"/>
+                                                </Style>
+                                            </MenuItem.Style>
+                                        </MenuItem>
                                     </ContextMenu>
                                 </Setter.Value>
                             </Setter>
                         </Style>
                     </ListBox.ItemContainerStyle>
-                    
+
                 </ListBox>
 
                 <!-- ADD NEW HOST -->
