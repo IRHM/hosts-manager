@@ -28,6 +28,7 @@ namespace hosts_manager
     {
         // Instances of classes
         static ManageFile mf = new ManageFile();
+        static ErrorHandler eh = new ErrorHandler();
 
         public MainWindow()
         {
@@ -170,17 +171,24 @@ namespace hosts_manager
 
         private void copyCtx_Click(object sender, RoutedEventArgs e)
         {
-            // Get listboxitem that copy was clicked on
-            ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
-            UIElement lbi = cm.PlacementTarget; // <- listboxitem
-
-            // Get textblock in listboxitem
-            foreach (TextBlock tb in findVisualChildren<TextBlock>(lbi))
+            try
             {
-                string rule = tb.Text;
+                // Get listboxitem that copy was clicked on
+                ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
+                UIElement lbi = cm.PlacementTarget; // <- listboxitem
 
-                // Copy rule to clipboard
-                Clipboard.SetText(rule);
+                // Get textblock in listboxitem
+                foreach (TextBlock tb in findVisualChildren<TextBlock>(lbi))
+                {
+                    string rule = tb.Text;
+
+                    // Copy rule to clipboard
+                    Clipboard.SetText(rule);
+                }
+            }
+            catch (Exception ex)
+            {
+                eh.showError(ex);
             }
         }
     }
