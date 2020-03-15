@@ -104,29 +104,6 @@ namespace hosts_manager
             }
         }
 
-        private void hostCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            disableBtn.IsEnabled = true;
-            deleteBtn.IsEnabled = true;
-        }
-
-        private void hostCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            foreach (CheckBox cb in findVisualChildren<CheckBox>(hostsListBox))
-            {
-                // If one checkbox is checked return to stop function
-                if (cb.IsChecked == true)
-                {
-                    return;
-                }
-            }
-
-            // If function isn't stopped above then..
-            // ..all checkboxes are unticked so enable buttons
-            disableBtn.IsEnabled = false;
-            deleteBtn.IsEnabled = false;
-        }
-
         private List<TextBlock> getHostsCheckedTextBlocks()
         {
             List<TextBlock> checkedTextBlocks = new List<TextBlock>();
@@ -155,6 +132,29 @@ namespace hosts_manager
             return checkedTextBlocks;
         }
 
+        private void hostCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            disableBtn.IsEnabled = true;
+            deleteBtn.IsEnabled = true;
+        }
+
+        private void hostCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            foreach (CheckBox cb in findVisualChildren<CheckBox>(hostsListBox))
+            {
+                // If one checkbox is checked return to stop function
+                if (cb.IsChecked == true)
+                {
+                    return;
+                }
+            }
+
+            // If function isn't stopped above then..
+            // ..all checkboxes are unticked so enable buttons
+            disableBtn.IsEnabled = false;
+            deleteBtn.IsEnabled = false;
+        }
+
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
             // Get all checked items textblock values and delete from hosts file
@@ -170,7 +170,18 @@ namespace hosts_manager
 
         private void copyCtx_Click(object sender, RoutedEventArgs e)
         {
-            
+            // Get listboxitem that copy was clicked on
+            ContextMenu cm = (ContextMenu)ContextMenu.ItemsControlFromItemContainer((MenuItem)e.OriginalSource);
+            UIElement lbi = cm.PlacementTarget; // <- listboxitem
+
+            // Get textblock in listboxitem
+            foreach (TextBlock tb in findVisualChildren<TextBlock>(lbi))
+            {
+                string rule = tb.Text;
+
+                // Copy rule to clipboard
+                Clipboard.SetText(rule);
+            }
         }
     }
 }
