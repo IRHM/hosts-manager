@@ -60,11 +60,11 @@ namespace hosts_manager
             {
                 var brokenRule = ruleSeperated[0];
 
-                eh.showError(ex, $"Try removing rule '{brokenRule}' from hosts file.");
+                eh.ShowError(ex, $"Try removing rule '{brokenRule}' from hosts file.");
             }
             catch (Exception ex)
             {
-                eh.showError(ex);
+                eh.ShowError(ex);
             }
 
             return rules;
@@ -85,11 +85,11 @@ namespace hosts_manager
             }
             catch (IOException ex)
             {
-                eh.showError(ex);
+                eh.ShowError(ex);
             }
             catch (Exception ex)
             {
-                eh.showError(ex);
+                eh.ShowError(ex);
             }
             finally
             {
@@ -129,11 +129,11 @@ namespace hosts_manager
             }
             catch (IOException ex)
             {
-                eh.showError(ex);
+                eh.ShowError(ex);
             }
             catch (Exception ex)
             {
-                eh.showError(ex);
+                eh.ShowError(ex);
             }
             finally
             {

@@ -34,10 +34,10 @@ namespace hosts_manager
         {
             InitializeComponent();
 
-            addCurrentHostRules();
+            AddCurrentHostRules();
         }
 
-        private void addCurrentHostRules()
+        private void AddCurrentHostRules()
         {
             // Clear current items from listbox
             hostsListBox.Items.Clear();
@@ -63,11 +63,11 @@ namespace hosts_manager
             }
         }
 
-        private void addItemBtn_Click(object sender, RoutedEventArgs e)
+        private void AddItemBtn_Click(object sender, RoutedEventArgs e)
         {
             // Get textBox data
-            string host = hostTextBox.Text;
-            string address = addressTextBox.Text;
+            string host = HostTextBox.Text;
+            string address = AddressTextBox.Text;
 
             ObservableCollection<Host> hostData = new ObservableCollection<Host>();
 
@@ -85,7 +85,7 @@ namespace hosts_manager
             hostsListBox.Items.Add(hostData);
         }
 
-        public static IEnumerable<T> findVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
         {
             if (depObj != null)
             {
@@ -97,7 +97,7 @@ namespace hosts_manager
                         yield return (T)child;
                     }
 
-                    foreach (T childOfChild in findVisualChildren<T>(child))
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
                     {
                         yield return childOfChild;
                     }
@@ -105,14 +105,14 @@ namespace hosts_manager
             }
         }
 
-        private List<TextBlock> getHostsCheckedTextBlocks()
+        private List<TextBlock> GetHostsCheckedTextBlocks()
         {
             List<TextBlock> checkedTextBlocks = new List<TextBlock>();
             int i = 0;
 
-            foreach (StackPanel sp in findVisualChildren<StackPanel>(hostsListBox))
+            foreach (StackPanel sp in FindVisualChildren<StackPanel>(hostsListBox))
             {
-                foreach (CheckBox cb in findVisualChildren<CheckBox>(sp))
+                foreach (CheckBox cb in FindVisualChildren<CheckBox>(sp))
                 {
                     // If checkbox isn't checked skip iteration
                     if (cb.IsChecked == false)
@@ -121,7 +121,7 @@ namespace hosts_manager
                     }
 
                     // Add textblock to list if checkbox is ticked
-                    foreach (TextBlock tb in findVisualChildren<TextBlock>(sp))
+                    foreach (TextBlock tb in FindVisualChildren<TextBlock>(sp))
                     {
                         checkedTextBlocks.Add(tb);
                     }
@@ -133,15 +133,15 @@ namespace hosts_manager
             return checkedTextBlocks;
         }
 
-        private void hostCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void HostCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             disableBtn.IsEnabled = true;
             deleteBtn.IsEnabled = true;
         }
 
-        private void hostCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void HostCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            foreach (CheckBox cb in findVisualChildren<CheckBox>(hostsListBox))
+            foreach (CheckBox cb in FindVisualChildren<CheckBox>(hostsListBox))
             {
                 // If one checkbox is checked return to stop function
                 if (cb.IsChecked == true)
@@ -156,20 +156,20 @@ namespace hosts_manager
             deleteBtn.IsEnabled = false;
         }
 
-        private void deleteBtn_Click(object sender, RoutedEventArgs e)
+        private void DeleteBtn_Click(object sender, RoutedEventArgs e)
         {
             // Get all checked items textblock values and delete from hosts file
-            foreach (TextBlock tb in getHostsCheckedTextBlocks())
+            foreach (TextBlock tb in GetHostsCheckedTextBlocks())
             {
                 string rule = tb.Text;
                 mf.deleteHostRule(rule);
             }
 
             // After deleting refresh listbox
-            addCurrentHostRules();
+            AddCurrentHostRules();
         }
 
-        private void copyCtx_Click(object sender, RoutedEventArgs e)
+        private void CopyCtx_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -178,7 +178,7 @@ namespace hosts_manager
                 UIElement lbi = cm.PlacementTarget; // <- listboxitem
 
                 // Get textblock in listboxitem
-                foreach (TextBlock tb in findVisualChildren<TextBlock>(lbi))
+                foreach (TextBlock tb in FindVisualChildren<TextBlock>(lbi))
                 {
                     string rule = tb.Text;
 
@@ -188,7 +188,7 @@ namespace hosts_manager
             }
             catch (Exception ex)
             {
-                eh.showError(ex);
+                eh.ShowError(ex);
             }
         }
     }
